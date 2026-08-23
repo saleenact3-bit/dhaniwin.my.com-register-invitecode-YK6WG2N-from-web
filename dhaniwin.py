@@ -524,7 +524,7 @@ input::placeholder {
     href="/admin"
     class="admin-link">
 
-    Admin Login
+     Login
 
 </a>
 
