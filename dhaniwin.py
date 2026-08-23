@@ -36,34 +36,45 @@ HTML = """
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
 
-<title>Dhani Win Register</title>
+<title>Dhani Win</title>
 
 
 <style>
 
+/* ================= BASIC ================= */
+
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
 
 body {
 
-    margin: 0;
-
-    min-height: 100vh;
-
     font-family: Arial, sans-serif;
-
-    color: white;
 
     background:
         radial-gradient(
             circle at top,
-            #432366,
-            #180b2d 70%
+            #432366 0%,
+            #211036 48%,
+            #170b29 100%
         );
+
+    color: white;
+
+    overflow-x: hidden;
 }
 
 
@@ -71,7 +82,9 @@ body {
 
 .top {
 
-    height: 350px;
+    width: 100%;
+
+    height: 260px;
 
     position: relative;
 
@@ -79,8 +92,8 @@ body {
 
     background:
         linear-gradient(
-            rgba(25, 5, 50, .40),
-            rgba(25, 5, 50, .90)
+            rgba(25, 5, 50, 0.35),
+            rgba(25, 5, 50, 0.88)
         ),
         url("https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop");
 
@@ -90,31 +103,49 @@ body {
 }
 
 
+/* BACK BUTTON */
+
 .back {
 
     position: absolute;
 
-    left: 25px;
+    top: 18px;
+    left: 18px;
 
-    top: 22px;
+    width: 34px;
+    height: 34px;
 
-    font-size: 55px;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 42px;
 
     font-weight: 200;
+
+    line-height: 30px;
+
+    color: white;
 }
 
+
+/* LANGUAGE */
 
 .language {
 
     position: absolute;
 
-    right: 25px;
+    top: 20px;
+    right: 18px;
 
-    top: 30px;
+    font-size: 15px;
 
-    font-size: 21px;
+    white-space: nowrap;
 }
 
+
+/* LOGO */
 
 .logo {
 
@@ -122,101 +153,151 @@ body {
 
     width: 100%;
 
-    top: 120px;
+    top: 92px;
 
     text-align: center;
 }
 
-
 .logo h1 {
 
-    margin: 0;
+    font-size: 43px;
 
-    font-size: 58px;
+    line-height: 48px;
 
     font-style: italic;
 
-    color: #b85cff;
-}
+    font-weight: 800;
 
+    color: #b65cff;
+}
 
 .logo h2 {
 
-    margin: -5px 0 0;
+    margin-top: -2px;
 
-    font-size: 48px;
+    font-size: 35px;
+
+    line-height: 38px;
 
     color: #ff9d16;
+
+    font-weight: 800;
 }
 
 
-/* ================= FORM ================= */
+/* ================= MAIN ================= */
 
 .container {
 
-    width: 92%;
+    width: calc(100% - 32px);
 
-    max-width: 780px;
+    max-width: 430px;
 
-    margin: 15px auto 40px;
+    margin: 10px auto 30px;
 }
 
 
-/* INPUT BOX */
+/* ================= MESSAGE ================= */
+
+.message {
+
+    width: 100%;
+
+    margin-bottom: 10px;
+
+    padding: 10px 12px;
+
+    text-align: center;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,0.08);
+
+    color: #ffd75a;
+
+    font-size: 14px;
+}
+
+
+/* ================= INPUT BOX ================= */
 
 .input-box {
 
-    height: 75px;
+    width: 100%;
 
-    margin: 18px 0;
+    height: 58px;
+
+    margin-bottom: 13px;
 
     display: flex;
 
     align-items: center;
 
-    padding: 0 18px;
+    padding: 0 13px;
 
-    border-radius: 18px;
+    border-radius: 14px;
 
-    border: 1px solid
-        rgba(190, 145, 230, .45);
+    border: 1px solid rgba(
+        190,
+        145,
+        230,
+        0.42
+    );
 
     background:
-        rgba(43, 24, 70, .95);
+        rgba(43, 24, 70, 0.94);
 
     box-shadow:
-        inset 0 0 15px
-        rgba(0, 0, 0, .12);
+        inset 0 0 12px
+        rgba(0,0,0,0.10);
 }
 
+
+/* INPUT ICON */
 
 .icon {
 
-    width: 50px;
+    width: 34px;
 
-    font-size: 25px;
+    min-width: 34px;
 
-    text-align: center;
+    display: flex;
 
-    color: #c9a8ff;
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 20px;
+
+    color: #bea1dd;
 }
 
+
+/* COUNTRY CODE */
 
 .country {
 
-    font-size: 24px;
+    margin-right: 9px;
 
-    font-weight: bold;
+    font-size: 19px;
 
-    margin-right: 12px;
+    font-weight: 600;
+
+    color: #ffffff;
 }
 
+
+/* INPUT */
 
 input {
 
     width: 100%;
 
+    min-width: 0;
+
     height: 100%;
+
+    padding: 0;
 
     border: none;
 
@@ -226,25 +307,115 @@ input {
 
     color: white;
 
-    font-size: 21px;
+    font-size: 16px;
+
+    font-family: Arial, sans-serif;
 }
 
 
 input::placeholder {
 
-    color: #a38abf;
+    color: #9d88b7;
+
+    opacity: 1;
 }
 
 
-.eye {
+/* ================= EYE ICON ================= */
 
-    margin-left: 10px;
+/*
+   Emoji ഉപയോഗിക്കുന്നില്ല.
+   ഇത് CSS ഉപയോഗിച്ചുള്ള proper eye icon ആണ്.
+*/
+
+.eye-button {
+
+    width: 30px;
+
+    min-width: 30px;
+
+    height: 30px;
+
+    margin-left: 6px;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
 
     cursor: pointer;
+}
 
-    font-size: 23px;
 
-    color: #c1a7d8;
+/* EYE SHAPE */
+
+.eye-shape {
+
+    width: 21px;
+
+    height: 13px;
+
+    border: 2px solid #bda5d6;
+
+    border-radius: 80% 20%;
+
+    transform: rotate(45deg);
+
+    position: relative;
+}
+
+
+/* EYE CENTER */
+
+.eye-shape::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 5px;
+
+    height: 5px;
+
+    background: #bda5d6;
+
+    border-radius: 50%;
+
+    top: 2px;
+
+    left: 6px;
+}
+
+
+/* CLOSED EYE */
+
+.eye-button.closed
+.eye-shape {
+
+    border-color: #88729e;
+
+    opacity: 0.85;
+}
+
+
+/* STRIKE THROUGH CLOSED EYE */
+
+.eye-button.closed::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 25px;
+
+    height: 2px;
+
+    background: #bda5d6;
+
+    transform: rotate(-45deg);
 }
 
 
@@ -252,39 +423,43 @@ input::placeholder {
 
 .register {
 
-    width: 90%;
+    width: 100%;
 
-    height: 75px;
+    height: 58px;
+
+    margin: 20px auto 17px;
 
     display: block;
 
-    margin: 35px auto 25px;
-
     border: none;
 
-    border-radius: 45px;
+    border-radius: 30px;
 
     background:
         linear-gradient(
-            #ffe56c,
-            #f0a800
+            180deg,
+            #ffe66b 0%,
+            #ffc21c 45%,
+            #efa800 100%
         );
 
     color: #28132f;
 
-    font-size: 28px;
+    font-size: 20px;
+
+    font-weight: 500;
 
     cursor: pointer;
 
     box-shadow:
-        0 8px 20px
-        rgba(0, 0, 0, .30);
+        0 5px 13px
+        rgba(0,0,0,0.28);
 }
 
 
 .register:active {
 
-    transform: scale(.98);
+    transform: scale(0.985);
 }
 
 
@@ -292,11 +467,9 @@ input::placeholder {
 
 .login {
 
-    width: 90%;
+    width: 100%;
 
-    height: 75px;
-
-    margin: auto;
+    height: 58px;
 
     display: flex;
 
@@ -304,36 +477,108 @@ input::placeholder {
 
     align-items: center;
 
-    border: 2px solid #d5a632;
+    border: 1.5px solid #d4a63b;
 
-    border-radius: 45px;
+    border-radius: 30px;
 
     color: #e8b83f;
 
     text-decoration: none;
 
-    font-size: 25px;
+    font-size: 19px;
+
+    font-weight: 500;
 }
 
 
-/* ================= MESSAGE ================= */
+/* ================= SMALL MOBILE ================= */
 
-.message {
+@media (max-width: 360px) {
 
-    padding: 13px;
+    .top {
+        height: 235px;
+    }
 
-    margin: 10px;
+    .logo {
+        top: 82px;
+    }
 
-    text-align: center;
+    .logo h1 {
+        font-size: 38px;
+    }
 
-    border-radius: 10px;
+    .logo h2 {
+        font-size: 31px;
+    }
 
-    background:
-        rgba(255, 255, 255, .08);
+    .container {
+        width: calc(100% - 24px);
+    }
 
-    color: #ffd75a;
+    .input-box {
+        height: 54px;
+        margin-bottom: 11px;
+        border-radius: 13px;
+    }
 
-    font-size: 17px;
+    input {
+        font-size: 14px;
+    }
+
+    .country {
+        font-size: 17px;
+    }
+
+    .register,
+    .login {
+        height: 54px;
+    }
+
+}
+
+
+/* ================= TABLET / LAPTOP ================= */
+
+@media (min-width: 600px) {
+
+    .top {
+
+        height: 330px;
+    }
+
+    .logo {
+
+        top: 115px;
+    }
+
+    .logo h1 {
+
+        font-size: 52px;
+    }
+
+    .logo h2 {
+
+        font-size: 43px;
+    }
+
+    .container {
+
+        max-width: 500px;
+
+        margin-top: 18px;
+    }
+
+    .input-box {
+
+        height: 62px;
+    }
+
+    .register,
+    .login {
+
+        height: 62px;
+    }
+
 }
 
 </style>
@@ -344,7 +589,7 @@ input::placeholder {
 <body>
 
 
-<!-- ================= TOP ================= -->
+<!-- ================= HEADER ================= -->
 
 <div class="top">
 
@@ -397,7 +642,7 @@ input::placeholder {
       action="/register">
 
 
-<!-- PHONE NUMBER -->
+<!-- PHONE -->
 
 <div class="input-box">
 
@@ -405,17 +650,16 @@ input::placeholder {
         📱
     </div>
 
-
     <div class="country">
         +91
     </div>
-
 
     <input
         type="tel"
         name="phone"
         placeholder="Enter your phone number"
         maxlength="10"
+        inputmode="numeric"
         required>
 
 </div>
@@ -430,7 +674,6 @@ input::placeholder {
         🔒
     </div>
 
-
     <input
         type="password"
         id="password"
@@ -442,10 +685,14 @@ input::placeholder {
 
 
     <div
-        class="eye"
-        onclick="showPassword('password')">
+        class="eye-button"
+        id="passwordEye"
+        onclick="togglePassword(
+            'password',
+            'passwordEye'
+        )">
 
-        👁
+        <div class="eye-shape"></div>
 
     </div>
 
@@ -461,10 +708,9 @@ input::placeholder {
         🔒
     </div>
 
-
     <input
         type="password"
-        id="confirm_password"
+        id="confirmPassword"
         name="confirm_password"
         placeholder="Enter the password again"
         minlength="8"
@@ -473,10 +719,14 @@ input::placeholder {
 
 
     <div
-        class="eye"
-        onclick="showPassword('confirm_password')">
+        class="eye-button"
+        id="confirmEye"
+        onclick="togglePassword(
+            'confirmPassword',
+            'confirmEye'
+        )">
 
-        👁
+        <div class="eye-shape"></div>
 
     </div>
 
@@ -484,7 +734,7 @@ input::placeholder {
 
 
 
-<!-- REGISTER BUTTON -->
+<!-- REGISTER -->
 
 <button
     type="submit"
@@ -516,19 +766,30 @@ input::placeholder {
 
 <script>
 
-function showPassword(id) {
+/* ================= PASSWORD SHOW/HIDE ================= */
+
+function togglePassword(inputId, eyeId) {
 
     const input =
-        document.getElementById(id);
+        document.getElementById(inputId);
+
+    const eye =
+        document.getElementById(eyeId);
 
 
     if (input.type === "password") {
 
         input.type = "text";
 
-    } else {
+        eye.classList.remove("closed");
+
+    }
+
+    else {
 
         input.type = "password";
+
+        eye.classList.add("closed");
 
     }
 
@@ -557,15 +818,18 @@ def home():
 def register():
 
     phone = request.form.get(
-        "phone", ""
+        "phone",
+        ""
     ).strip()
 
     password = request.form.get(
-        "password", ""
+        "password",
+        ""
     )
 
     confirm_password = request.form.get(
-        "confirm_password", ""
+        "confirm_password",
+        ""
     )
 
 
@@ -580,7 +844,7 @@ def register():
         return redirect("/")
 
 
-    # PASSWORD CHECK
+    # PASSWORD LENGTH
 
     if len(password) < 8 or len(password) > 15:
 
@@ -615,7 +879,6 @@ def register():
 
         conn = sqlite3.connect(DATABASE)
 
-
         conn.execute(
             """
             INSERT INTO users
@@ -627,7 +890,6 @@ def register():
                 hashed_password
             )
         )
-
 
         conn.commit()
 
@@ -643,12 +905,10 @@ def register():
         return redirect("/")
 
 
-    # SUCCESS
-
     return redirect("/success")
 
 
-# ================= SUCCESS PAGE =================
+# ================= SUCCESS =================
 
 @app.route("/success")
 def success():
@@ -661,12 +921,16 @@ def success():
 <head>
 
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+      content="width=device-width,
+               initial-scale=1.0">
 
-<title>Registration Successful</title>
-
+<title>Success</title>
 
 <style>
+
+* {
+    box-sizing: border-box;
+}
 
 body {
 
@@ -680,6 +944,8 @@ body {
 
     align-items: center;
 
+    padding: 20px;
+
     background: #180b2d;
 
     color: white;
@@ -687,40 +953,52 @@ body {
     font-family: Arial;
 }
 
-
 .box {
 
-    width: 80%;
+    width: 100%;
 
-    max-width: 500px;
+    max-width: 380px;
 
-    padding: 40px;
+    padding: 30px 20px;
 
     text-align: center;
 
     background: #2b1746;
 
-    border-radius: 25px;
+    border-radius: 22px;
 }
-
 
 h1 {
 
     color: #ffd044;
+
+    font-size: 25px;
 }
 
+p {
+
+    font-size: 16px;
+
+    color: #d0c2dc;
+}
 
 a {
 
-    display: inline-block;
+    display: inline-flex;
 
-    margin-top: 20px;
+    justify-content: center;
 
-    padding: 15px 35px;
+    align-items: center;
+
+    margin-top: 18px;
+
+    width: 100%;
+
+    height: 52px;
 
     background: #f4b400;
 
-    border-radius: 30px;
+    border-radius: 28px;
 
     color: #24122e;
 
@@ -732,7 +1010,6 @@ a {
 </style>
 
 </head>
-
 
 <body>
 
@@ -758,7 +1035,7 @@ a {
 """
 
 
-# ================= START =================
+# ================= START SERVER =================
 
 if __name__ == "__main__":
 
