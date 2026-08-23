@@ -1524,7 +1524,7 @@ def register():
         return redirect("/")
 
 
-    # CONFIRM PASSWORD
+    # CREATE PASSWORD
 
     if password != confirm:
 
