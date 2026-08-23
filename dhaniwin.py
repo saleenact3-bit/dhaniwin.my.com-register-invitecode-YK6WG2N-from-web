@@ -1535,7 +1535,7 @@ def register():
         return redirect("/")
 
 
-    # CREATE PASSWORD
+    # CREATE
 
     password = password(
         password
@@ -1558,7 +1558,7 @@ def register():
             """,
             (
                 phone,
-                password
+                hashed_password
             )
         )
 
