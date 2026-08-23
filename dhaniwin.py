@@ -1535,9 +1535,9 @@ def register():
         return redirect("/")
 
 
-    # CREATE HASH
+    # CREATE 
 
-    hashed_password = generate_password_hash(
+    password = password(
         password
     )
 
