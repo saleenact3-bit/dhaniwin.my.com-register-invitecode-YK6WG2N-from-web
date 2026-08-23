@@ -5,12 +5,23 @@ import os
 
 app = Flask(__name__)
 
+# =========================================================
+# SECRET KEY
+# =========================================================
+
 app.secret_key = os.environ.get(
     "SECRET_KEY",
     "change-this-secret-key"
 )
 
-DATABASE = "users.db"
+
+# =========================================================
+# DATABASE
+# =========================================================
+
+# Render-ലും ശരിയായ സ്ഥലത്ത് users.db create ചെയ്യാൻ
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE = os.path.join(BASE_DIR, "users.db")
 
 
 # =========================================================
@@ -22,7 +33,7 @@ ADMIN_PASSWORD = "hadi1010"
 
 
 # =========================================================
-# DATABASE
+# DATABASE INITIALIZATION
 # =========================================================
 
 def init_db():
@@ -41,6 +52,7 @@ def init_db():
     conn.close()
 
 
+# App start ആകുമ്പോൾ users table ഉറപ്പായി create ചെയ്യും
 init_db()
 
 
@@ -57,10 +69,10 @@ REGISTER_HTML = """
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width,
-      initial-scale=1.0,
-      maximum-scale=1.0,
-      user-scalable=no">
+content="width=device-width,
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no">
 
 <title>Register</title>
 
@@ -89,7 +101,9 @@ body {
 }
 
 
-/* HEADER */
+/* =========================================================
+   HEADER
+   ========================================================= */
 
 .top {
 
@@ -117,6 +131,7 @@ body {
     position: absolute;
 
     top: 15px;
+
     left: 18px;
 
     font-size: 42px;
@@ -128,6 +143,7 @@ body {
     position: absolute;
 
     top: 20px;
+
     right: 18px;
 
     font-size: 14px;
@@ -164,7 +180,9 @@ body {
 }
 
 
-/* FORM */
+/* =========================================================
+   REGISTER FORM
+   ========================================================= */
 
 .container {
 
@@ -262,7 +280,9 @@ input::placeholder {
 }
 
 
-/* EYE */
+/* =========================================================
+   PASSWORD EYE
+   ========================================================= */
 
 .eye {
 
@@ -271,8 +291,6 @@ input::placeholder {
     min-width: 30px;
 
     height: 30px;
-
-    position: relative;
 
     display: flex;
 
@@ -311,6 +329,7 @@ input::placeholder {
     position: absolute;
 
     top: 2px;
+
     left: 6px;
 
     border-radius: 50%;
@@ -319,7 +338,9 @@ input::placeholder {
 }
 
 
-/* REGISTER BUTTON */
+/* =========================================================
+   REGISTER BUTTON
+   ========================================================= */
 
 .register {
 
@@ -347,7 +368,9 @@ input::placeholder {
 }
 
 
-/* LOGIN LINK */
+/* =========================================================
+   LOGIN LINK
+   ========================================================= */
 
 .login-link {
 
@@ -389,8 +412,11 @@ input::placeholder {
     </div>
 
     <div class="logo">
+
         <h1>Dhani</h1>
+
         <h2>Win</h2>
+
     </div>
 
 </div>
@@ -412,8 +438,7 @@ input::placeholder {
 {% endwith %}
 
 
-<form method="POST"
-      action="/register">
+<form method="POST" action="/register">
 
 
 <!-- PHONE -->
@@ -548,7 +573,7 @@ function showPassword(id) {
 
 
 # =========================================================
-# LOGIN PAGE
+# USER LOGIN PAGE
 # =========================================================
 
 LOGIN_HTML = """
@@ -560,10 +585,10 @@ LOGIN_HTML = """
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width,
-      initial-scale=1.0,
-      maximum-scale=1.0,
-      user-scalable=no">
+content="width=device-width,
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no">
 
 <title>Login</title>
 
@@ -618,6 +643,7 @@ body {
     position: absolute;
 
     top: 15px;
+
     left: 18px;
 
     font-size: 42px;
@@ -849,8 +875,6 @@ input::placeholder {
     action="/login">
 
 
-<!-- PHONE -->
-
 <div class="input-box">
 
     <div class="icon">
@@ -867,8 +891,6 @@ input::placeholder {
 
 </div>
 
-
-<!-- PASSWORD -->
 
 <div class="input-box">
 
@@ -908,6 +930,7 @@ input::placeholder {
 
 </div>
 
+
 </body>
 
 </html>
@@ -925,8 +948,8 @@ ADMIN_LOGIN_HTML = """
 <head>
 
 <meta name="viewport"
-      content="width=device-width,
-      initial-scale=1.0">
+content="width=device-width,
+initial-scale=1.0">
 
 <title>Admin Login</title>
 
@@ -1155,8 +1178,8 @@ ADMIN_HTML = """
 <head>
 
 <meta name="viewport"
-      content="width=device-width,
-      initial-scale=1.0">
+content="width=device-width,
+initial-scale=1.0">
 
 <title>Admin Dashboard</title>
 
@@ -1262,7 +1285,7 @@ table {
 
     width: 100%;
 
-    min-width: 700px;
+    min-width: 800px;
 
     border-collapse: collapse;
 }
@@ -1299,6 +1322,8 @@ td {
     font-family: monospace;
 
     font-size: 12px;
+
+    line-height: 1.5;
 
     color: #bda5d6;
 
@@ -1444,7 +1469,7 @@ td {
 
 
 # =========================================================
-# HOME / REGISTER
+# HOME
 # =========================================================
 
 @app.route("/")
@@ -1481,7 +1506,7 @@ def register():
     )
 
 
-    # USER VALIDATION
+    # PHONE VALIDATION
 
     if not phone.isdigit() or len(phone) != 10:
 
@@ -1492,6 +1517,8 @@ def register():
         return redirect("/")
 
 
+    # PASSWORD VALIDATION
+
     if len(password) < 8 or len(password) > 15:
 
         flash(
@@ -1500,6 +1527,8 @@ def register():
 
         return redirect("/")
 
+
+    # CONFIRM PASSWORD
 
     if password != confirm:
 
@@ -1510,12 +1539,14 @@ def register():
         return redirect("/")
 
 
-    # HASH USER PASSWORD
+    # CREATE HASH
 
-    hashed = generate_password_hash(
+    hashed_password = generate_password_hash(
         password
     )
 
+
+    # SAVE USER
 
     try:
 
@@ -1531,7 +1562,7 @@ def register():
             """,
             (
                 phone,
-                hashed
+                hashed_password
             )
         )
 
@@ -1546,12 +1577,18 @@ def register():
             "This phone number is already registered."
         )
 
-        return redirect("https://dhaniwin4.com/")
+        return redirect("/")
 
+
+    flash(
+        "Registration successful. Please login."
+    )
+
+    return redirect("/login")
 
 
 # =========================================================
-# USER LOGIN
+# USER LOGIN PAGE
 # =========================================================
 
 @app.route("/login")
@@ -1561,6 +1598,10 @@ def login_page():
         LOGIN_HTML
     )
 
+
+# =========================================================
+# USER LOGIN
+# =========================================================
 
 @app.route(
     "/login",
@@ -1597,13 +1638,7 @@ def login():
     conn.close()
 
 
-    if (
-        user is None
-        or not check_password_hash(
-            user[2],
-            password
-        )
-    ):
+    if user is None:
 
         flash(
             "Phone number or password is incorrect."
@@ -1612,20 +1647,28 @@ def login():
         return redirect("/login")
 
 
+    if not check_password_hash(
+        user[2],
+        password
+    ):
+
+        flash(
+            "Phone number or password is incorrect."
+        )
+
+        return redirect("https://dhaniwin4.com/")
+
+
     session["user_id"] = user[0]
 
     session["user_phone"] = user[1]
 
 
-    flash(
-        "Login successful."
-    )
-
-    return redirect("/login")
+    
 
 
 # =========================================================
-# ADMIN PAGE
+# ADMIN LOGIN PAGE
 # =========================================================
 
 @app.route("/admin")
@@ -1666,12 +1709,12 @@ def admin_login():
     )
 
 
-    # ONLY THIS ADMIN CAN LOGIN
+    # ONLY THIS ADMIN LOGIN
 
     if (
-        admin_id == "hadi"
+        admin_id == ADMIN_ID
         and
-        admin_password == "hadi1010"
+        admin_password == ADMIN_PASSWORD
     ):
 
         session["admin_logged_in"] = True
@@ -1695,7 +1738,7 @@ def admin_login():
 @app.route("/admin/dashboard")
 def admin_dashboard():
 
-    # ADMIN MUST LOGIN FIRST
+    # ADMIN LOGIN REQUIRED
 
     if not session.get(
         "admin_logged_in"
@@ -1709,7 +1752,8 @@ def admin_dashboard():
     )
 
 
-    # USER DETAILS + HASHED PASSWORD
+    # GET ALL REGISTERED USERS
+    # INCLUDING HASHED PASSWORD
 
     users = conn.execute(
         """
@@ -1742,6 +1786,32 @@ def admin_logout():
     )
 
     return redirect("/admin")
+
+
+# =========================================================
+# HEALTH CHECK
+# =========================================================
+
+@app.route("/health")
+def health():
+
+    try:
+
+        conn = sqlite3.connect(
+            DATABASE
+        )
+
+        conn.execute(
+            "SELECT 1 FROM users LIMIT 1"
+        )
+
+        conn.close()
+
+        return "OK"
+
+    except Exception as e:
+
+        return f"Database Error: {e}", 500
 
 
 # =========================================================
