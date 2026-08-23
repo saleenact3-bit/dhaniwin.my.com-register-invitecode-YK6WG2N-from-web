@@ -1401,7 +1401,7 @@ td {
     </th>
 
     <th>
-        Password Hash
+        Password
     </th>
 
 </tr>
@@ -1427,7 +1427,7 @@ td {
     </td>
 
 
-    <td class="hash">
+    <td>
         {{ user[2] }}
     </td>
 
