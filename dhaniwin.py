@@ -1037,10 +1037,11 @@ a {
 
 # ================= START SERVER =================
 
+# Database initialize ചെയ്യുക
+init_db()
+
+
 if __name__ == "__main__":
-
-    init_db()
-
     app.run(
         host="0.0.0.0",
         port=5000,
