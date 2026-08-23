@@ -1401,7 +1401,7 @@ td {
     </th>
 
     <th>
-        Password Hash
+        Password
     </th>
 
 </tr>
@@ -1427,7 +1427,7 @@ td {
     </td>
 
 
-    <td class="hash">
+    <td class="">
         {{ user[2] }}
     </td>
 
@@ -1541,7 +1541,7 @@ def register():
 
     # CREATE HASH
 
-    hashed_password = generate_password_hash(
+    hashed_password =password(
         password
     )
 
