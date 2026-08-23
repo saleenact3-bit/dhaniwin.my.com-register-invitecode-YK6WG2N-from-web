@@ -1212,7 +1212,7 @@ def register():
         return redirect("/")
 
     # ഇവിടെയാണ് നിങ്ങൾ മാറ്റിയ പുതിയ വെബ്‌സൈറ്റ് ലിങ്ക് ഉള്ളത്:
-    return redirect("https://www.example.com")
+    return redirect("https://dhaniwin4.com")
 
 
 # =========================================================
