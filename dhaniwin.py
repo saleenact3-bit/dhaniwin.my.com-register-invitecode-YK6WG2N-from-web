@@ -1658,12 +1658,12 @@ def login():
 
     session["user_phone"] = user[1]
 
- flash(
+
+    flash(
         "Login successful."
     )
 
-    return redirect("https://dhaniwin4.com/")
-    
+    return redirect("/login")
 
 
 # =========================================================
