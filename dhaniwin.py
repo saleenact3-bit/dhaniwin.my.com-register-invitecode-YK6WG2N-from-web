@@ -1535,7 +1535,7 @@ def register():
         return redirect("/")
 
 
-    # CREATE
+    # CREATE PASSWORD
 
     password = password(
         password
@@ -1637,7 +1637,7 @@ def login():
         return redirect("/login")
 
 
-    if not check_password_hash(
+    if not password(
         user[2],
         password
     ):
