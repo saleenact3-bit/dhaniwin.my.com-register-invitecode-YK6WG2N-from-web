@@ -1,5 +1,5 @@
 from flask import Flask, render_template_string, request, redirect, session, flash
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 import sqlite3
 import os
 
@@ -13,7 +13,7 @@ app.secret_key = os.environ.get(
 DATABASE = "users.db"
 
 # =========================================================
-# ADMIN LOGIN
+# ADMIN DETAILS
 # =========================================================
 
 ADMIN_ID = "hadi"
@@ -40,9 +40,7 @@ def init_db():
     conn.close()
 
 
-# IMPORTANT:
-# Render/Gunicorn-ലും database table ഉണ്ടാകാൻ
-# ഇത് main block-ന് പുറത്താണ്.
+# Render/Gunicorn-ലും database table create ആകാൻ
 init_db()
 
 
@@ -60,11 +58,11 @@ REGISTER_HTML = """
 
 <meta name="viewport"
       content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
+      initial-scale=1.0,
+      maximum-scale=1.0,
+      user-scalable=no">
 
-<title>Dhani Win Register</title>
+<title>Register</title>
 
 <style>
 
@@ -74,13 +72,9 @@ REGISTER_HTML = """
     padding: 0;
 }
 
-html,
 body {
-    width: 100%;
-    min-height: 100%;
-}
 
-body {
+    min-height: 100vh;
 
     font-family: Arial, sans-serif;
 
@@ -89,22 +83,15 @@ body {
     background:
         radial-gradient(
             circle at top,
-            #432366 0%,
-            #211036 48%,
-            #170b29 100%
+            #432366,
+            #180b2d
         );
-
-    overflow-x: hidden;
 }
 
 
-/* =====================================================
-   TOP
-   ===================================================== */
+/* HEADER */
 
 .top {
-
-    width: 100%;
 
     height: 260px;
 
@@ -114,8 +101,8 @@ body {
 
     background:
         linear-gradient(
-            rgba(25, 5, 50, 0.35),
-            rgba(25, 5, 50, 0.88)
+            rgba(25,5,50,.35),
+            rgba(25,5,50,.88)
         ),
         url("https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop");
 
@@ -129,12 +116,10 @@ body {
 
     position: absolute;
 
-    top: 18px;
+    top: 15px;
     left: 18px;
 
     font-size: 42px;
-
-    color: white;
 }
 
 
@@ -145,7 +130,7 @@ body {
     top: 20px;
     right: 18px;
 
-    font-size: 15px;
+    font-size: 14px;
 }
 
 
@@ -153,9 +138,9 @@ body {
 
     position: absolute;
 
-    width: 100%;
+    top: 90px;
 
-    top: 92px;
+    width: 100%;
 
     text-align: center;
 }
@@ -165,11 +150,7 @@ body {
 
     font-size: 43px;
 
-    line-height: 48px;
-
     font-style: italic;
-
-    font-weight: 800;
 
     color: #b65cff;
 }
@@ -177,21 +158,13 @@ body {
 
 .logo h2 {
 
-    margin-top: -2px;
-
     font-size: 35px;
 
-    line-height: 38px;
-
     color: #ff9d16;
-
-    font-weight: 800;
 }
 
 
-/* =====================================================
-   CONTAINER
-   ===================================================== */
+/* FORM */
 
 .container {
 
@@ -199,40 +172,28 @@ body {
 
     max-width: 430px;
 
-    margin: 12px auto 30px;
+    margin: 15px auto;
 }
 
-
-/* =====================================================
-   MESSAGE
-   ===================================================== */
 
 .message {
 
     padding: 10px;
 
-    margin-bottom: 10px;
-
-    text-align: center;
+    margin-bottom: 12px;
 
     border-radius: 10px;
 
-    background:
-        rgba(255,255,255,0.08);
+    text-align: center;
 
     color: #ffd75a;
 
-    font-size: 14px;
+    background:
+        rgba(255,255,255,.08);
 }
 
 
-/* =====================================================
-   INPUT BOX
-   ===================================================== */
-
 .input-box {
-
-    width: 100%;
 
     height: 58px;
 
@@ -247,34 +208,31 @@ body {
     border-radius: 14px;
 
     border: 1px solid
-        rgba(190,145,230,0.42);
+        rgba(190,145,230,.42);
 
-    background:
-        rgba(43,24,70,0.94);
+    background: #2b1846;
 }
 
 
 .icon {
 
-    width: 34px;
+    width: 32px;
 
-    min-width: 34px;
+    min-width: 32px;
 
     text-align: center;
 
     font-size: 19px;
-
-    color: #bea1dd;
 }
 
 
 .country {
 
-    margin-right: 9px;
+    margin-right: 8px;
 
-    font-size: 19px;
+    font-size: 18px;
 
-    font-weight: 600;
+    font-weight: bold;
 }
 
 
@@ -282,9 +240,9 @@ input {
 
     width: 100%;
 
-    min-width: 0;
-
     height: 100%;
+
+    min-width: 0;
 
     border: none;
 
@@ -304,11 +262,9 @@ input::placeholder {
 }
 
 
-/* =====================================================
-   EYE
-   ===================================================== */
+/* EYE */
 
-.eye-button {
+.eye {
 
     width: 30px;
 
@@ -348,25 +304,22 @@ input::placeholder {
 
     content: "";
 
-    position: absolute;
-
     width: 5px;
 
     height: 5px;
 
-    background: #bda5d6;
+    position: absolute;
+
+    top: 2px;
+    left: 6px;
 
     border-radius: 50%;
 
-    top: 2px;
-
-    left: 6px;
+    background: #bda5d6;
 }
 
 
-/* =====================================================
-   REGISTER BUTTON
-   ===================================================== */
+/* BUTTON */
 
 .register {
 
@@ -374,9 +327,7 @@ input::placeholder {
 
     height: 58px;
 
-    margin: 20px auto 17px;
-
-    display: block;
+    margin-top: 20px;
 
     border: none;
 
@@ -384,9 +335,7 @@ input::placeholder {
 
     background:
         linear-gradient(
-            180deg,
             #ffe66b,
-            #ffc21c,
             #efa800
         );
 
@@ -398,39 +347,23 @@ input::placeholder {
 }
 
 
-.register:active {
-
-    transform: scale(0.985);
-}
-
-
-/* =====================================================
-   ADMIN BUTTON
-   ===================================================== */
+/* ADMIN LINK */
 
 .admin-link {
 
-    width: 100%;
+    display: block;
 
-    height: 45px;
+    margin-top: 20px;
 
-    display: flex;
+    text-align: center;
 
-    justify-content: center;
-
-    align-items: center;
-
-    color: #a992bd;
+    color: #9f8caf;
 
     text-decoration: none;
 
     font-size: 14px;
 }
 
-
-/* =====================================================
-   LAPTOP
-   ===================================================== */
 
 @media (min-width: 600px) {
 
@@ -440,14 +373,6 @@ input::placeholder {
 
     .logo {
         top: 115px;
-    }
-
-    .logo h1 {
-        font-size: 52px;
-    }
-
-    .logo h2 {
-        font-size: 43px;
     }
 
     .container {
@@ -475,11 +400,8 @@ input::placeholder {
     </div>
 
     <div class="logo">
-
         <h1>Dhani</h1>
-
         <h2>Win</h2>
-
     </div>
 
 </div>
@@ -490,17 +412,13 @@ input::placeholder {
 
 {% with messages = get_flashed_messages() %}
 
-    {% if messages %}
+    {% for message in messages %}
 
-        {% for message in messages %}
+        <div class="message">
+            {{ message }}
+        </div>
 
-            <div class="message">
-                {{ message }}
-            </div>
-
-        {% endfor %}
-
-    {% endif %}
+    {% endfor %}
 
 {% endwith %}
 
@@ -550,8 +468,8 @@ input::placeholder {
         required>
 
     <div
-        class="eye-button"
-        onclick="togglePassword('password')">
+        class="eye"
+        onclick="showPassword('password')">
 
         <div class="eye-shape"></div>
 
@@ -570,7 +488,7 @@ input::placeholder {
 
     <input
         type="password"
-        id="confirmPassword"
+        id="confirm"
         name="confirm_password"
         placeholder="Enter the password again"
         minlength="8"
@@ -578,8 +496,8 @@ input::placeholder {
         required>
 
     <div
-        class="eye-button"
-        onclick="togglePassword('confirmPassword')">
+        class="eye"
+        onclick="showPassword('confirm')">
 
         <div class="eye-shape"></div>
 
@@ -600,6 +518,8 @@ input::placeholder {
 </form>
 
 
+<!-- ADMIN URL -->
+
 <a
     href="/admin"
     class="admin-link">
@@ -614,7 +534,7 @@ input::placeholder {
 
 <script>
 
-function togglePassword(id) {
+function showPassword(id) {
 
     const input =
         document.getElementById(id);
@@ -641,7 +561,7 @@ function togglePassword(id) {
 
 
 # =========================================================
-# REGISTER
+# HOME
 # =========================================================
 
 @app.route("/")
@@ -651,6 +571,10 @@ def home():
         REGISTER_HTML
     )
 
+
+# =========================================================
+# USER REGISTER
+# =========================================================
 
 @app.route("/register", methods=["POST"])
 def register():
@@ -665,13 +589,13 @@ def register():
         ""
     )
 
-    confirm_password = request.form.get(
+    confirm = request.form.get(
         "confirm_password",
         ""
     )
 
 
-    # PHONE VALIDATION
+    # PHONE
 
     if not phone.isdigit() or len(phone) != 10:
 
@@ -682,7 +606,7 @@ def register():
         return redirect("/")
 
 
-    # PASSWORD LENGTH
+    # PASSWORD
 
     if len(password) < 8 or len(password) > 15:
 
@@ -693,9 +617,9 @@ def register():
         return redirect("/")
 
 
-    # PASSWORD MATCH
+    # CONFIRM
 
-    if password != confirm_password:
+    if password != confirm:
 
         flash(
             "Passwords do not match."
@@ -706,14 +630,16 @@ def register():
 
     # HASH PASSWORD
 
-    hashed_password = generate_password_hash(
+    hashed = generate_password_hash(
         password
     )
 
 
     try:
 
-        conn = sqlite3.connect(DATABASE)
+        conn = sqlite3.connect(
+            DATABASE
+        )
 
         conn.execute(
             """
@@ -723,12 +649,11 @@ def register():
             """,
             (
                 phone,
-                hashed_password
+                hashed
             )
         )
 
         conn.commit()
-
         conn.close()
 
 
@@ -762,7 +687,7 @@ ADMIN_LOGIN_HTML = """
 
 <meta name="viewport"
       content="width=device-width,
-               initial-scale=1.0">
+      initial-scale=1.0">
 
 <title>Admin Login</title>
 
@@ -788,14 +713,14 @@ body {
 
     font-family: Arial;
 
+    color: white;
+
     background:
         radial-gradient(
             circle at top,
             #432366,
             #180b2d
         );
-
-    color: white;
 }
 
 
@@ -807,24 +732,41 @@ body {
 
     padding: 28px 20px;
 
+    border-radius: 22px;
+
     background: #2b1746;
 
     border: 1px solid
         rgba(190,145,230,.35);
-
-    border-radius: 22px;
 }
 
 
 h1 {
 
-    text-align: center;
-
     margin-bottom: 25px;
+
+    text-align: center;
 
     color: #ffd044;
 
-    font-size: 28px;
+    font-size: 27px;
+}
+
+
+.message {
+
+    margin-bottom: 15px;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    text-align: center;
+
+    color: #ffd75a;
+
+    background:
+        rgba(255,255,255,.08);
 }
 
 
@@ -876,23 +818,6 @@ button {
 }
 
 
-.message {
-
-    margin-bottom: 15px;
-
-    padding: 10px;
-
-    border-radius: 8px;
-
-    text-align: center;
-
-    color: #ffd75a;
-
-    background:
-        rgba(255,255,255,.08);
-}
-
-
 .back {
 
     display: block;
@@ -901,20 +826,21 @@ button {
 
     text-align: center;
 
-    color: #bfa7d1;
+    color: #bda5d6;
 
     text-decoration: none;
-
 }
 
 </style>
 
 </head>
 
+
 <body>
 
 
 <div class="box">
+
 
 <h1>
     Admin Login
@@ -923,17 +849,13 @@ button {
 
 {% with messages = get_flashed_messages() %}
 
-    {% if messages %}
+    {% for message in messages %}
 
-        {% for message in messages %}
+        <div class="message">
+            {{ message }}
+        </div>
 
-            <div class="message">
-                {{ message }}
-            </div>
-
-        {% endfor %}
-
-    {% endif %}
+    {% endfor %}
 
 {% endwith %}
 
@@ -957,7 +879,9 @@ button {
 
 
 <button type="submit">
+
     Login
+
 </button>
 
 
@@ -984,23 +908,34 @@ button {
 
 
 # =========================================================
-# ADMIN LOGIN
+# /admin
 # =========================================================
 
 @app.route("/admin")
-def admin_login():
+def admin():
 
-    if session.get("admin_logged_in"):
+    if session.get(
+        "admin_logged_in"
+    ):
 
-        return redirect("/admin/dashboard")
+        return redirect(
+            "/admin/dashboard"
+        )
 
     return render_template_string(
         ADMIN_LOGIN_HTML
     )
 
 
-@app.route("/admin/login", methods=["POST"])
-def admin_login_submit():
+# =========================================================
+# ADMIN LOGIN
+# =========================================================
+
+@app.route(
+    "/admin/login",
+    methods=["POST"]
+)
+def admin_login():
 
     admin_id = request.form.get(
         "admin_id",
@@ -1019,7 +954,9 @@ def admin_login_submit():
         admin_password == ADMIN_PASSWORD
     ):
 
-        session["admin_logged_in"] = True
+        session[
+            "admin_logged_in"
+        ] = True
 
         return redirect(
             "/admin/dashboard"
@@ -1037,7 +974,7 @@ def admin_login_submit():
 # ADMIN DASHBOARD
 # =========================================================
 
-ADMIN_DASHBOARD_HTML = """
+ADMIN_HTML = """
 
 <!DOCTYPE html>
 
@@ -1047,7 +984,7 @@ ADMIN_DASHBOARD_HTML = """
 
 <meta name="viewport"
       content="width=device-width,
-               initial-scale=1.0">
+      initial-scale=1.0">
 
 <title>Admin Dashboard</title>
 
@@ -1063,9 +1000,11 @@ body {
 
     min-height: 100vh;
 
-    padding: 20px;
+    padding: 15px;
 
     font-family: Arial;
+
+    color: white;
 
     background:
         radial-gradient(
@@ -1073,8 +1012,6 @@ body {
             #432366,
             #180b2d
         );
-
-    color: white;
 }
 
 
@@ -1096,8 +1033,6 @@ body {
 
     align-items: center;
 
-    gap: 15px;
-
     margin-bottom: 20px;
 }
 
@@ -1106,15 +1041,15 @@ h1 {
 
     color: #ffd044;
 
-    font-size: 26px;
+    font-size: 25px;
 }
 
 
 .logout {
 
-    padding: 10px 17px;
+    padding: 9px 15px;
 
-    border: 1px solid #c99b37;
+    border: 1px solid #d1a43e;
 
     border-radius: 20px;
 
@@ -1126,18 +1061,28 @@ h1 {
 }
 
 
+.count {
+
+    margin-bottom: 12px;
+
+    color: #c9b7d5;
+}
+
+
 .card {
 
+    width: 100%;
+
     overflow-x: auto;
+
+    padding: 10px;
+
+    border-radius: 18px;
 
     background: #2b1746;
 
     border: 1px solid
         rgba(190,145,230,.35);
-
-    border-radius: 18px;
-
-    padding: 15px;
 }
 
 
@@ -1145,85 +1090,43 @@ table {
 
     width: 100%;
 
-    border-collapse: collapse;
+    min-width: 420px;
 
-    min-width: 450px;
+    border-collapse: collapse;
 }
 
 
 th {
 
-    color: #ffd044;
+    padding: 12px;
 
     text-align: left;
 
-    padding: 13px;
+    color: #ffd044;
 
-    border-bottom: 1px solid #5d4074;
+    border-bottom: 1px solid #604475;
 }
 
 
 td {
 
-    padding: 13px;
-
-    border-bottom: 1px solid #49335b;
+    padding: 12px;
 
     color: #e4d9ec;
+
+    border-bottom: 1px solid #49335b;
 }
 
 
 .empty {
 
-    text-align: center;
-
     padding: 35px;
+
+    text-align: center;
 
     color: #a995b7;
 }
 
-
-.count {
-
-    margin-bottom: 15px;
-
-    color: #c6b5d1;
-}
-
-
-.reset {
-
-    display: inline-block;
-
-    padding: 7px 11px;
-
-    border-radius: 15px;
-
-    background: #f0ae14;
-
-    color: #24122e;
-
-    text-decoration: none;
-
-    font-size: 12px;
-}
-
-
-@media (max-width: 500px) {
-
-    body {
-        padding: 12px;
-    }
-
-    .header {
-        align-items: flex-start;
-    }
-
-    h1 {
-        font-size: 22px;
-    }
-
-}
 
 </style>
 
@@ -1266,6 +1169,7 @@ td {
 
 {% if users %}
 
+
 <table>
 
 <thead>
@@ -1277,8 +1181,6 @@ td {
     <th>Phone Number</th>
 
     <th>Password</th>
-
-    <th>Action</th>
 
 </tr>
 
@@ -1301,19 +1203,7 @@ td {
     </td>
 
     <td>
-        ••••••••••••••••
-    </td>
-
-    <td>
-
-        <a
-            href="/admin/reset/{{ user[0] }}"
-            class="reset">
-
-            Reset
-
-        </a>
-
+        •••••••••••••
     </td>
 
 </tr>
@@ -1357,12 +1247,16 @@ td {
 @app.route("/admin/dashboard")
 def admin_dashboard():
 
-    if not session.get("admin_logged_in"):
+    if not session.get(
+        "admin_logged_in"
+    ):
 
         return redirect("/admin")
 
 
-    conn = sqlite3.connect(DATABASE)
+    conn = sqlite3.connect(
+        DATABASE
+    )
 
     users = conn.execute(
         """
@@ -1376,348 +1270,8 @@ def admin_dashboard():
 
 
     return render_template_string(
-        ADMIN_DASHBOARD_HTML,
+        ADMIN_HTML,
         users=users
-    )
-
-
-# =========================================================
-# RESET PASSWORD PAGE
-# =========================================================
-
-RESET_HTML = """
-
-<!DOCTYPE html>
-
-<html>
-
-<head>
-
-<meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0">
-
-<title>Reset Password</title>
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-
-    margin: 0;
-
-    min-height: 100vh;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    padding: 20px;
-
-    font-family: Arial;
-
-    background:
-        radial-gradient(
-            circle at top,
-            #432366,
-            #180b2d
-        );
-
-    color: white;
-}
-
-
-.box {
-
-    width: 100%;
-
-    max-width: 400px;
-
-    padding: 25px 20px;
-
-    border-radius: 20px;
-
-    background: #2b1746;
-}
-
-
-h2 {
-
-    color: #ffd044;
-
-    text-align: center;
-
-    margin-bottom: 10px;
-}
-
-
-.phone {
-
-    text-align: center;
-
-    color: #c8b5d4;
-
-    margin-bottom: 20px;
-}
-
-
-input {
-
-    width: 100%;
-
-    height: 55px;
-
-    padding: 0 14px;
-
-    margin-bottom: 15px;
-
-    border: 1px solid #65457f;
-
-    border-radius: 12px;
-
-    outline: none;
-
-    background: #1d1030;
-
-    color: white;
-
-    font-size: 16px;
-}
-
-
-button {
-
-    width: 100%;
-
-    height: 55px;
-
-    border: none;
-
-    border-radius: 28px;
-
-    background:
-        linear-gradient(
-            #ffe66b,
-            #efa800
-        );
-
-    color: #28132f;
-
-    font-size: 18px;
-}
-
-
-a {
-
-    display: block;
-
-    margin-top: 17px;
-
-    text-align: center;
-
-    color: #bda5d6;
-
-    text-decoration: none;
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<div class="box">
-
-<h2>
-    Reset Password
-</h2>
-
-
-<div class="phone">
-
-    +91 {{ phone }}
-
-</div>
-
-
-<form method="POST">
-
-
-<input
-    type="password"
-    name="new_password"
-    placeholder="New password"
-    minlength="8"
-    maxlength="15"
-    required>
-
-
-<input
-    type="password"
-    name="confirm_password"
-    placeholder="Confirm new password"
-    minlength="8"
-    maxlength="15"
-    required>
-
-
-<button type="submit">
-
-    Save New Password
-
-</button>
-
-
-</form>
-
-
-<a href="/admin/dashboard">
-
-    ← Back to Dashboard
-
-</a>
-
-
-</div>
-
-
-</body>
-
-</html>
-
-"""
-
-
-# =========================================================
-# RESET PASSWORD
-# =========================================================
-
-@app.route(
-    "/admin/reset/<int:user_id>",
-    methods=["GET", "POST"]
-)
-def reset_password(user_id):
-
-    if not session.get("admin_logged_in"):
-
-        return redirect("/admin")
-
-
-    conn = sqlite3.connect(DATABASE)
-
-    user = conn.execute(
-        """
-        SELECT phone
-        FROM users
-        WHERE id = ?
-        """,
-        (user_id,)
-    ).fetchone()
-
-    conn.close()
-
-
-    if not user:
-
-        flash("User not found.")
-
-        return redirect(
-            "/admin/dashboard"
-        )
-
-
-    phone = user[0]
-
-
-    if request.method == "POST":
-
-        new_password = request.form.get(
-            "new_password",
-            ""
-        )
-
-        confirm_password = request.form.get(
-            "confirm_password",
-            ""
-        )
-
-
-        if len(new_password) < 8:
-
-            flash(
-                "Password must contain at least 8 characters."
-            )
-
-            return redirect(
-                f"/admin/reset/{user_id}"
-            )
-
-
-        if len(new_password) > 15:
-
-            flash(
-                "Password cannot exceed 15 characters."
-            )
-
-            return redirect(
-                f"/admin/reset/{user_id}"
-            )
-
-
-        if new_password != confirm_password:
-
-            flash(
-                "Passwords do not match."
-            )
-
-            return redirect(
-                f"/admin/reset/{user_id}"
-            )
-
-
-        hashed_password = generate_password_hash(
-            new_password
-        )
-
-
-        conn = sqlite3.connect(DATABASE)
-
-        conn.execute(
-            """
-            UPDATE users
-            SET password = ?
-            WHERE id = ?
-            """,
-            (
-                hashed_password,
-                user_id
-            )
-        )
-
-        conn.commit()
-
-        conn.close()
-
-
-        flash(
-            "Password reset successfully."
-        )
-
-        return redirect(
-            "/admin/dashboard"
-        )
-
-
-    return render_template_string(
-        RESET_HTML,
-        phone=phone
     )
 
 
@@ -1737,15 +1291,18 @@ def admin_logout():
 
 
 # =========================================================
-# RUN
+# START
 # =========================================================
 
 if __name__ == "__main__":
 
     app.run(
         host="0.0.0.0",
-        port=5000,
-        debug=True
+        port=int(
+            os.environ.get(
+                "PORT",
+                5000
+            )
+        ),
+        debug=False
     )
-
-
