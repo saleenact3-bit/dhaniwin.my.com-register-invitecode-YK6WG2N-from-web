@@ -670,7 +670,7 @@ def register():
         "Registration successful."
     )
 
-    return redirect("/")
+    return redirect("https://dhaniwin4.com/")
 
 
 # =========================================================
