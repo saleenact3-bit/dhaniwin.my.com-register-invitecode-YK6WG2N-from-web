@@ -57,10 +57,10 @@ REGISTER_HTML = """
 <meta charset="UTF-8">
 
 <meta name="viewport"
-content="width=device-width,
-initial-scale=1.0,
-maximum-scale=1.0,
-user-scalable=no">
+      content="width=device-width,
+      initial-scale=1.0,
+      maximum-scale=1.0,
+      user-scalable=no">
 
 <title>Register</title>
 
@@ -73,8 +73,11 @@ user-scalable=no">
 }
 
 body {
+
     min-height: 100vh;
+
     font-family: Arial, sans-serif;
+
     color: white;
 
     background:
@@ -85,7 +88,11 @@ body {
         );
 }
 
+
+/* HEADER */
+
 .top {
+
     height: 260px;
 
     position: relative;
@@ -100,61 +107,100 @@ body {
         url("https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop");
 
     background-size: cover;
+
     background-position: center;
 }
 
+
 .back {
+
     position: absolute;
+
     top: 15px;
     left: 18px;
+
     font-size: 42px;
 }
 
+
 .language {
+
     position: absolute;
+
     top: 20px;
     right: 18px;
+
     font-size: 14px;
 }
 
+
 .logo {
+
     position: absolute;
+
     top: 90px;
+
     width: 100%;
+
     text-align: center;
 }
 
+
 .logo h1 {
+
     font-size: 43px;
+
     font-style: italic;
+
     color: #b65cff;
 }
 
+
 .logo h2 {
+
     font-size: 35px;
+
     color: #ff9d16;
 }
 
+
+/* FORM */
+
 .container {
+
     width: calc(100% - 32px);
+
     max-width: 430px;
+
     margin: 15px auto;
 }
 
+
 .message {
+
     padding: 10px;
+
     margin-bottom: 12px;
+
     border-radius: 10px;
+
     text-align: center;
+
     color: #ffd75a;
-    background: rgba(255,255,255,.08);
+
+    background:
+        rgba(255,255,255,.08);
 }
 
+
 .input-box {
+
     height: 58px;
+
     margin-bottom: 13px;
 
     display: flex;
+
     align-items: center;
 
     padding: 0 13px;
@@ -167,25 +213,39 @@ body {
     background: #2b1846;
 }
 
+
 .icon {
+
     width: 32px;
+
     min-width: 32px;
+
     text-align: center;
+
     font-size: 19px;
 }
 
+
 .country {
+
     margin-right: 8px;
+
     font-size: 18px;
+
     font-weight: bold;
 }
 
+
 input {
+
     width: 100%;
+
     height: 100%;
+
     min-width: 0;
 
     border: none;
+
     outline: none;
 
     background: transparent;
@@ -195,25 +255,39 @@ input {
     font-size: 16px;
 }
 
+
 input::placeholder {
+
     color: #9d88b7;
 }
 
+
+/* EYE */
+
 .eye {
+
     width: 30px;
+
     min-width: 30px;
+
     height: 30px;
+
+    position: relative;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     cursor: pointer;
 }
 
+
 .eye-shape {
+
     width: 21px;
+
     height: 13px;
 
     border: 2px solid #bda5d6;
@@ -225,10 +299,13 @@ input::placeholder {
     position: relative;
 }
 
+
 .eye-shape::after {
+
     content: "";
 
     width: 5px;
+
     height: 5px;
 
     position: absolute;
@@ -241,8 +318,13 @@ input::placeholder {
     background: #bda5d6;
 }
 
+
+/* REGISTER BUTTON */
+
 .register {
+
     width: 100%;
+
     height: 58px;
 
     margin-top: 20px;
@@ -264,7 +346,11 @@ input::placeholder {
     cursor: pointer;
 }
 
+
+/* LOGIN LINK */
+
 .login-link {
+
     display: block;
 
     margin-top: 20px;
@@ -278,11 +364,19 @@ input::placeholder {
     font-size: 16px;
 }
 
+
+.login-link:hover {
+
+    color: #ffd044;
+}
+
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="top">
 
@@ -304,6 +398,7 @@ input::placeholder {
 
 <div class="container">
 
+
 {% with messages = get_flashed_messages() %}
 
     {% for message in messages %}
@@ -317,8 +412,11 @@ input::placeholder {
 {% endwith %}
 
 
-<form method="POST" action="/register">
+<form method="POST"
+      action="/register">
 
+
+<!-- PHONE -->
 
 <div class="input-box">
 
@@ -341,6 +439,8 @@ input::placeholder {
 </div>
 
 
+<!-- PASSWORD -->
+
 <div class="input-box">
 
     <div class="icon">
@@ -351,7 +451,7 @@ input::placeholder {
         type="password"
         id="password"
         name="password"
-        placeholder="Password: 8-15 characters"
+        placeholder="Password: 8-15 letters and numbers"
         minlength="8"
         maxlength="15"
         required>
@@ -366,6 +466,8 @@ input::placeholder {
 
 </div>
 
+
+<!-- CONFIRM PASSWORD -->
 
 <div class="input-box">
 
@@ -438,6 +540,7 @@ function showPassword(id) {
 
 </script>
 
+
 </body>
 
 </html>
@@ -450,37 +553,33 @@ function showPassword(id) {
 
 LOGIN_HTML = """
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-<meta name="viewport"
-content="width=device-width,
-initial-scale=1.0">
+<meta charset="UTF-8">
 
-<title>User Login</title>
+<meta name="viewport"
+      content="width=device-width,
+      initial-scale=1.0,
+      maximum-scale=1.0,
+      user-scalable=no">
+
+<title>Login</title>
 
 <style>
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
 
-    margin: 0;
-
     min-height: 100vh;
 
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    padding: 20px;
-
-    font-family: Arial;
+    font-family: Arial, sans-serif;
 
     color: white;
 
@@ -492,38 +591,100 @@ body {
         );
 }
 
-.box {
+
+.top {
+
+    height: 260px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            rgba(25,5,50,.35),
+            rgba(25,5,50,.88)
+        ),
+        url("https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop");
+
+    background-size: cover;
+
+    background-position: center;
+}
+
+
+.back {
+
+    position: absolute;
+
+    top: 15px;
+    left: 18px;
+
+    font-size: 42px;
+
+    cursor: pointer;
+}
+
+
+.logo {
+
+    position: absolute;
+
+    top: 90px;
 
     width: 100%;
 
-    max-width: 390px;
-
-    padding: 28px 20px;
-
-    border-radius: 22px;
-
-    background: #2b1746;
-
-    border: 1px solid
-        rgba(190,145,230,.35);
+    text-align: center;
 }
 
-h1 {
+
+.logo h1 {
+
+    font-size: 43px;
+
+    font-style: italic;
+
+    color: #b65cff;
+}
+
+
+.logo h2 {
+
+    font-size: 35px;
+
+    color: #ff9d16;
+}
+
+
+.container {
+
+    width: calc(100% - 32px);
+
+    max-width: 430px;
+
+    margin: 25px auto;
+}
+
+
+.title {
+
+    margin-bottom: 20px;
 
     text-align: center;
 
-    color: #ffd044;
+    font-size: 25px;
 
-    margin-bottom: 25px;
+    color: #ffd044;
 }
+
 
 .message {
 
-    margin-bottom: 15px;
-
     padding: 10px;
 
-    border-radius: 8px;
+    margin-bottom: 12px;
+
+    border-radius: 10px;
 
     text-align: center;
 
@@ -533,38 +694,75 @@ h1 {
         rgba(255,255,255,.08);
 }
 
+
+.input-box {
+
+    height: 58px;
+
+    margin-bottom: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 13px;
+
+    border-radius: 14px;
+
+    border: 1px solid
+        rgba(190,145,230,.42);
+
+    background: #2b1846;
+}
+
+
+.icon {
+
+    width: 32px;
+
+    min-width: 32px;
+
+    font-size: 19px;
+
+    text-align: center;
+}
+
+
 input {
 
     width: 100%;
 
-    height: 55px;
+    height: 100%;
 
-    margin-bottom: 14px;
-
-    padding: 0 15px;
-
-    border: 1px solid #65457f;
-
-    border-radius: 12px;
+    border: none;
 
     outline: none;
 
-    background: #1d1030;
+    background: transparent;
 
     color: white;
 
     font-size: 16px;
 }
 
-button {
+
+input::placeholder {
+
+    color: #9d88b7;
+}
+
+
+.login-button {
 
     width: 100%;
 
-    height: 55px;
+    height: 58px;
+
+    margin-top: 8px;
 
     border: none;
 
-    border-radius: 28px;
+    border-radius: 30px;
 
     background:
         linear-gradient(
@@ -574,33 +772,63 @@ button {
 
     color: #28132f;
 
-    font-size: 19px;
+    font-size: 20px;
 
     cursor: pointer;
 }
 
-a {
+
+.register-link {
 
     display: block;
 
-    margin-top: 18px;
+    margin-top: 20px;
 
     text-align: center;
 
-    color: #bda5d6;
+    color: #d7c5e5;
 
     text-decoration: none;
+
+    font-size: 16px;
 }
 
 </style>
 
 </head>
 
+
 <body>
 
-<div class="box">
 
-<h1>User Login</h1>
+<div class="top">
+
+    <div
+        class="back"
+        onclick="history.back()">
+
+        ‹
+
+    </div>
+
+
+    <div class="logo">
+
+        <h1>Dhani</h1>
+
+        <h2>Win</h2>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+
+<div class="title">
+    Login
+</div>
 
 
 {% with messages = get_flashed_messages() %}
@@ -616,33 +844,67 @@ a {
 {% endwith %}
 
 
-<form method="POST" action="/login">
-
-<input
-    type="tel"
-    name="phone"
-    placeholder="Phone Number"
-    maxlength="10"
-    required>
+<form
+    method="POST"
+    action="/login">
 
 
-<input
-    type="password"
-    name="password"
-    placeholder="Password"
-    required>
+<!-- PHONE -->
+
+<div class="input-box">
+
+    <div class="icon">
+        📱
+    </div>
+
+    <input
+        type="tel"
+        name="phone"
+        placeholder="Phone Number"
+        maxlength="10"
+        inputmode="numeric"
+        required>
+
+</div>
 
 
-<button type="submit">
+<!-- PASSWORD -->
+
+<div class="input-box">
+
+    <div class="icon">
+        🔒
+    </div>
+
+    <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        required>
+
+</div>
+
+
+<button
+    type="submit"
+    class="login-button">
+
     Login
+
 </button>
+
 
 </form>
 
 
-<a href="/">
+<a
+    href="/"
+    class="register-link">
+
     Don't have an account? Register
+
 </a>
+
 
 </div>
 
@@ -663,8 +925,8 @@ ADMIN_LOGIN_HTML = """
 <head>
 
 <meta name="viewport"
-content="width=device-width,
-initial-scale=1.0">
+      content="width=device-width,
+      initial-scale=1.0">
 
 <title>Admin Login</title>
 
@@ -700,6 +962,7 @@ body {
         );
 }
 
+
 .box {
 
     width: 100%;
@@ -716,6 +979,7 @@ body {
         rgba(190,145,230,.35);
 }
 
+
 h1 {
 
     margin-bottom: 25px;
@@ -726,6 +990,7 @@ h1 {
 
     font-size: 27px;
 }
+
 
 .message {
 
@@ -742,6 +1007,7 @@ h1 {
     background:
         rgba(255,255,255,.08);
 }
+
 
 input {
 
@@ -766,6 +1032,7 @@ input {
     font-size: 16px;
 }
 
+
 button {
 
     width: 100%;
@@ -789,6 +1056,7 @@ button {
     cursor: pointer;
 }
 
+
 .back {
 
     display: block;
@@ -806,11 +1074,16 @@ button {
 
 </head>
 
+
 <body>
+
 
 <div class="box">
 
-<h1>Admin Login</h1>
+
+<h1>
+    Admin Login
+</h1>
 
 
 {% with messages = get_flashed_messages() %}
@@ -826,8 +1099,9 @@ button {
 {% endwith %}
 
 
-<form method="POST"
-      action="/admin/login">
+<form
+    method="POST"
+    action="/admin/login">
 
 
 <input
@@ -845,7 +1119,9 @@ button {
 
 
 <button type="submit">
+
     Admin Login
+
 </button>
 
 
@@ -853,11 +1129,14 @@ button {
 
 
 <a href="/" class="back">
+
     ← Back
+
 </a>
 
 
 </div>
+
 
 </body>
 
@@ -876,8 +1155,8 @@ ADMIN_HTML = """
 <head>
 
 <meta name="viewport"
-content="width=device-width,
-initial-scale=1.0">
+      content="width=device-width,
+      initial-scale=1.0">
 
 <title>Admin Dashboard</title>
 
@@ -907,6 +1186,7 @@ body {
         );
 }
 
+
 .container {
 
     width: 100%;
@@ -915,6 +1195,7 @@ body {
 
     margin: auto;
 }
+
 
 .header {
 
@@ -927,12 +1208,14 @@ body {
     margin-bottom: 20px;
 }
 
+
 h1 {
 
     color: #ffd044;
 
     font-size: 25px;
 }
+
 
 .logout {
 
@@ -949,12 +1232,14 @@ h1 {
     font-size: 14px;
 }
 
+
 .count {
 
     margin-bottom: 12px;
 
     color: #c9b7d5;
 }
+
 
 .card {
 
@@ -972,18 +1257,20 @@ h1 {
         rgba(190,145,230,.35);
 }
 
+
 table {
 
     width: 100%;
 
-    min-width: 750px;
+    min-width: 700px;
 
     border-collapse: collapse;
 }
 
+
 th {
 
-    padding: 13px;
+    padding: 12px;
 
     text-align: left;
 
@@ -993,9 +1280,10 @@ th {
         1px solid #604475;
 }
 
+
 td {
 
-    padding: 13px;
+    padding: 12px;
 
     color: #e4d9ec;
 
@@ -1005,16 +1293,18 @@ td {
     vertical-align: top;
 }
 
+
 .hash {
 
     font-family: monospace;
 
     font-size: 12px;
 
-    word-break: break-all;
-
     color: #bda5d6;
+
+    word-break: break-all;
 }
+
 
 .empty {
 
@@ -1029,52 +1319,65 @@ td {
 
 </head>
 
+
 <body>
+
 
 <div class="container">
 
 
 <div class="header">
 
-<h1>
-    Admin Dashboard
-</h1>
+    <h1>
+        Admin Dashboard
+    </h1>
 
 
-<a
-    href="/admin/logout"
-    class="logout">
+    <a
+        href="/admin/logout"
+        class="logout">
 
-    Logout
+        Logout
 
-</a>
+    </a>
 
 </div>
 
 
 <div class="count">
 
-Registered Users:
-<strong>{{ users|length }}</strong>
+    Registered Users:
+    <strong>
+        {{ users|length }}
+    </strong>
 
 </div>
 
 
 <div class="card">
 
+
 {% if users %}
 
+
 <table>
+
 
 <thead>
 
 <tr>
 
-<th>ID</th>
+    <th>
+        ID
+    </th>
 
-<th>Phone Number</th>
+    <th>
+        Phone Number
+    </th>
 
-<th>Password Hash</th>
+    <th>
+        Password Hash
+    </th>
 
 </tr>
 
@@ -1083,47 +1386,56 @@ Registered Users:
 
 <tbody>
 
+
 {% for user in users %}
+
 
 <tr>
 
-<td>
-    {{ user[0] }}
-</td>
+    <td>
+        {{ user[0] }}
+    </td>
 
 
-<td>
-    +91 {{ user[1] }}
-</td>
+    <td>
+        +91 {{ user[1] }}
+    </td>
 
 
-<td class="hash">
-    {{ user[2] }}
-</td>
-
+    <td class="hash">
+        {{ user[2] }}
+    </td>
 
 </tr>
 
+
 {% endfor %}
 
+
 </tbody>
+
 
 </table>
 
 
 {% else %}
 
+
 <div class="empty">
 
-No registered users yet.
+    No registered users yet.
 
 </div>
+
 
 {% endif %}
 
-</div>
 
 </div>
+
+
+</div>
+
 
 </body>
 
@@ -1132,7 +1444,7 @@ No registered users yet.
 
 
 # =========================================================
-# HOME
+# HOME / REGISTER
 # =========================================================
 
 @app.route("/")
@@ -1169,6 +1481,8 @@ def register():
     )
 
 
+    # USER VALIDATION
+
     if not phone.isdigit() or len(phone) != 10:
 
         flash(
@@ -1196,9 +1510,9 @@ def register():
         return redirect("/")
 
 
-    # PASSWORD HASH
+    # HASH USER PASSWORD
 
-    hashed_password = generate_password_hash(
+    hashed = generate_password_hash(
         password
     )
 
@@ -1217,7 +1531,7 @@ def register():
             """,
             (
                 phone,
-                hashed_password
+                hashed
             )
         )
 
@@ -1232,8 +1546,14 @@ def register():
             "This phone number is already registered."
         )
 
-        return redirect("https://dhaniwin4.com/")
+        return redirect("/")
 
+
+    flash(
+        "Registration successful. Please login."
+    )
+
+    return redirect("/login")
 
 
 # =========================================================
@@ -1311,7 +1631,7 @@ def login():
 
 
 # =========================================================
-# ADMIN LOGIN PAGE
+# ADMIN PAGE
 # =========================================================
 
 @app.route("/admin")
@@ -1352,12 +1672,12 @@ def admin_login():
     )
 
 
-    # EXACT ADMIN ID AND PASSWORD
+    # ONLY THIS ADMIN CAN LOGIN
 
     if (
-        admin_id == ADMIN_ID
+        admin_id == "hadi"
         and
-        admin_password == ADMIN_PASSWORD
+        admin_password == "hadi1010"
     ):
 
         session["admin_logged_in"] = True
@@ -1381,6 +1701,8 @@ def admin_login():
 @app.route("/admin/dashboard")
 def admin_dashboard():
 
+    # ADMIN MUST LOGIN FIRST
+
     if not session.get(
         "admin_logged_in"
     ):
@@ -1393,7 +1715,7 @@ def admin_dashboard():
     )
 
 
-    # GET USER ID + PHONE + HASHED PASSWORD
+    # USER DETAILS + HASHED PASSWORD
 
     users = conn.execute(
         """
