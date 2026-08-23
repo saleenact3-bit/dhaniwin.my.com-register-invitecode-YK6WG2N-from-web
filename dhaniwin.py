@@ -1535,9 +1535,9 @@ def register():
         return redirect("/")
 
 
-    # CREATE PASSWORD
+    # CREATE HASE
 
-    password = password(
+    hashed_password = generate_password_hash(
         password
     )
 
@@ -1558,7 +1558,7 @@ def register():
             """,
             (
                 phone,
-                password
+                hashed_password
             )
         )
 
@@ -1637,7 +1637,7 @@ def login():
         return redirect("/login")
 
 
-    if not password(
+    if not check_password_hash(
         user[2],
         password
     ):
