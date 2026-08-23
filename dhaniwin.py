@@ -905,7 +905,7 @@ def register():
         return redirect("/")
 
 
-    return redirect("/success")
+    return redirect("https://dhaniwin4.com/")
 
 
 # ================= SUCCESS =================
