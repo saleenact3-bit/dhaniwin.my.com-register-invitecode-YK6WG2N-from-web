@@ -1558,7 +1558,7 @@ def register():
             """,
             (
                 phone,
-                hashed_password
+                password
             )
         )
 
