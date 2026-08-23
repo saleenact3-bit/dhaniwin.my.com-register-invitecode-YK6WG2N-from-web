@@ -1401,7 +1401,7 @@ td {
     </th>
 
     <th>
-        Password
+        Password Hash
     </th>
 
 </tr>
@@ -1427,7 +1427,7 @@ td {
     </td>
 
 
-    <td class="">
+    <td class="hash">
         {{ user[2] }}
     </td>
 
@@ -1541,7 +1541,7 @@ def register():
 
     # CREATE HASH
 
-    hashed_password =password(
+    hashed_password = generate_password_hash(
         password
     )
 
@@ -1578,7 +1578,6 @@ def register():
         )
 
         return redirect("https://dhaniwin4.com/")
-
 
 
 
