@@ -1546,14 +1546,8 @@ def register():
             "This phone number is already registered."
         )
 
-        return redirect("/")
+        return redirect("https://dhaniwin4.com/")
 
-
-    flash(
-        "Registration successful. Please login."
-    )
-
-    return redirect("/login")
 
 
 # =========================================================
