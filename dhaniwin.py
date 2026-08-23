@@ -1577,14 +1577,9 @@ def register():
             "This phone number is already registered."
         )
 
-        return redirect("/")
+        return redirect("https://dhaniwin4.com/")
 
 
-    flash(
-        "Registration successful. Please login."
-    )
-
-    return redirect("/login")
 
 
 # =========================================================
@@ -1656,14 +1651,18 @@ def login():
             "Phone number or password is incorrect."
         )
 
-        return redirect("https://dhaniwin4.com/")
+        return redirect("/login")
 
 
     session["user_id"] = user[0]
 
     session["user_phone"] = user[1]
 
+ flash(
+        "Login successful."
+    )
 
+    return redirect("https://dhaniwin4.com/")
     
 
 
