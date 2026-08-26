@@ -923,7 +923,7 @@ input::placeholder {
 
 
 # =========================================================
-# REGISTER ROUTE
+# USER REGISTER ROUTE
 # =========================================================
 
 @app.route("/", methods=["GET", "POST"])
@@ -932,46 +932,68 @@ def register():
 
     if request.method == "POST":
 
-        username = request.form.get("username", "").strip()
         phone = request.form.get("phone", "").strip()
         password = request.form.get("password", "")
         confirm_password = request.form.get("confirm_password", "")
 
-        if not username or not phone or not password:
+        # Username is generated automatically.
+        # The registration form does not contain a username field.
+        username = "user_" + phone
+
+        if not phone or not password or not confirm_password:
+
             flash("Please fill all fields.")
+
             return redirect("/register")
+
 
         if not phone.isdigit() or len(phone) != 10:
+
             flash("Enter a valid 10 digit phone number.")
+
             return redirect("/register")
+
 
         if len(password) < 8 or len(password) > 15:
+
             flash("Password must be 8-15 characters.")
+
             return redirect("/register")
+
 
         if password != confirm_password:
+
             flash("Passwords do not match.")
+
             return redirect("/register")
 
+
         try:
+
             connection = sqlite3.connect(DATABASE)
 
             connection.execute(
                 """
-                INSERT INTO users (username, phone, password)
+                INSERT INTO users
+                (username, phone, password)
                 VALUES (?, ?, ?)
                 """,
                 (username, phone, password)
             )
 
             connection.commit()
+
             connection.close()
 
             flash("Registration successful. Please login.")
+
             return redirect("/login")
 
+
         except sqlite3.IntegrityError:
-            flash("Username already exists.")
+
+            flash("This phone number is already registered.")
+
             return redirect("/register")
 
 
@@ -988,32 +1010,45 @@ def login():
     if request.method == "POST":
 
         phone = request.form.get("phone", "").strip()
+
         password = request.form.get("password", "")
 
+
         connection = sqlite3.connect(DATABASE)
+
         connection.row_factory = sqlite3.Row
+
 
         user = connection.execute(
             """
-            SELECT * FROM users
+            SELECT *
+            FROM users
             WHERE phone = ? AND password = ?
             """,
             (phone, password)
         ).fetchone()
 
+
         connection.close()
 
+
         if user:
+
             session["user_logged_in"] = True
+
             session["user_id"] = user["id"]
 
             return redirect("/")
 
+
         flash("Invalid phone number or password.")
+
         return redirect("/login")
 
 
     return render_template_string(LOGIN_HTML)
+
+
 # =========================================================
 # ADMIN LOGIN PAGE
 # =========================================================
@@ -1117,16 +1152,22 @@ def admin_login():
 
         return redirect("/admin/users")
 
+
     message = ""
+
 
     if request.method == "POST":
 
-        admin_id = request.form.get("admin_id", "")
+        admin_id = request.form.get(
+            "admin_id",
+            ""
+        )
 
         admin_password = request.form.get(
             "admin_password",
             ""
         )
+
 
         if (
             admin_id == ADMIN_ID
@@ -1137,14 +1178,17 @@ def admin_login():
 
             return redirect("/admin/users")
 
+
         else:
 
             message = "Invalid Admin ID or Password."
+
 
     return render_template_string(
         ADMIN_LOGIN_PAGE,
         message=message
     )
+
 
 # =========================
 # REGISTERED USERS PAGE
@@ -1157,9 +1201,11 @@ def admin_users():
 
         return redirect("/admin")
 
+
     connection = sqlite3.connect(DATABASE)
 
     connection.row_factory = sqlite3.Row
+
 
     users = connection.execute(
         """
@@ -1168,6 +1214,7 @@ def admin_users():
         ORDER BY id DESC
         """
     ).fetchall()
+
 
     connection.close()
 
