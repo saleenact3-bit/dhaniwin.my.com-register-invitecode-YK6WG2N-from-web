@@ -1,59 +1,44 @@
 from flask import Flask, render_template_string, request, redirect, flash, session
-from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 import os
 
 app = Flask(__name__)
 
-# =========================================================
-# SECRET KEY
-# =========================================================
+app.secret_key = "demo-secret-key-change-this"
 
-app.secret_key = os.environ.get(
-    "SECRET_KEY",
-    "change-this-secret-key"
-)
+DATABASE = "users.db"
 
 
 # =========================================================
-# DATABASE
-# =========================================================
-
-# Render-ലും ശരിയായ സ്ഥലത്ത് users.db create ചെയ്യാൻ
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATABASE = os.path.join(BASE_DIR, "users.db")
-
-
-# =========================================================
-# ADMIN DETAILS
+# ADMIN LOGIN DETAILS
 # =========================================================
 
 ADMIN_ID = "hadi"
 ADMIN_PASSWORD = "hadi1010"
 
 
-# =========================================================
-# DATABASE INITIALIZATION
-# =========================================================
+# =========================
+# DATABASE
+# =========================
 
-def init_db():
+def setup_database():
 
-    conn = sqlite3.connect(DATABASE)
+    connection = sqlite3.connect(DATABASE)
 
-    conn.execute("""
+    connection.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            phone TEXT UNIQUE NOT NULL,
+            username TEXT UNIQUE NOT NULL,
+            phone TEXT NOT NULL,
             password TEXT NOT NULL
         )
     """)
 
-    conn.commit()
-    conn.close()
+    connection.commit()
+    connection.close()
 
 
-# App start ആകുമ്പോൾ users table ഉറപ്പായി create ചെയ്യും
-init_db()
+setup_database()
 
 
 # =========================================================
@@ -369,7 +354,7 @@ input::placeholder {
 
 
 /* =========================================================
-   LOGIN LINK
+USER LOGIN LINK
    ========================================================= */
 
 .login-link {
@@ -941,225 +926,87 @@ input::placeholder {
 # ADMIN LOGIN PAGE
 # =========================================================
 
-ADMIN_LOGIN_HTML = """
+ADMIN_LOGIN_PAGE = """
 <!DOCTYPE html>
 <html>
 
 <head>
 
-<meta name="viewport"
-content="width=device-width,
-initial-scale=1.0">
-
-<title>Admin Login</title>
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-
-    margin: 0;
-
-    min-height: 100vh;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    padding: 20px;
-
-    font-family: Arial;
-
-    color: white;
-
-    background:
-        radial-gradient(
-            circle at top,
-            #432366,
-            #180b2d
-        );
-}
-
-
-.box {
-
-    width: 100%;
-
-    max-width: 390px;
-
-    padding: 28px 20px;
-
-    border-radius: 22px;
-
-    background: #2b1746;
-
-    border: 1px solid
-        rgba(190,145,230,.35);
-}
-
-
-h1 {
-
-    margin-bottom: 25px;
-
-    text-align: center;
-
-    color: #ffd044;
-
-    font-size: 27px;
-}
-
-
-.message {
-
-    margin-bottom: 15px;
-
-    padding: 10px;
-
-    border-radius: 8px;
-
-    text-align: center;
-
-    color: #ffd75a;
-
-    background:
-        rgba(255,255,255,.08);
-}
-
-
-input {
-
-    width: 100%;
-
-    height: 55px;
-
-    margin-bottom: 14px;
-
-    padding: 0 15px;
-
-    border: 1px solid #65457f;
-
-    border-radius: 12px;
-
-    outline: none;
-
-    background: #1d1030;
-
-    color: white;
-
-    font-size: 16px;
-}
-
-
-button {
-
-    width: 100%;
-
-    height: 55px;
-
-    border: none;
-
-    border-radius: 28px;
-
-    background:
-        linear-gradient(
-            #ffe66b,
-            #efa800
-        );
-
-    color: #28132f;
-
-    font-size: 19px;
-
-    cursor: pointer;
-}
-
-
-.back {
-
-    display: block;
-
-    margin-top: 18px;
-
-    text-align: center;
-
-    color: #bda5d6;
-
-    text-decoration: none;
-}
-
-</style>
+    <title>Admin Login</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #eeeeee;
+            padding: 40px;
+        }
+
+        .box {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+        }
+
+    </style>
 
 </head>
 
 
 <body>
-
 
 <div class="box">
 
+    <h2>Admin Login</h2>
 
-<h1>
-    Admin Login
-</h1>
+    <form method="POST">
 
+        <input
+            type="text"
+            name="admin_id"
+            placeholder="Admin ID"
+            required
+        >
 
-{% with messages = get_flashed_messages() %}
+        <input
+            type="password"
+            name="admin_password"
+            placeholder="Admin Password"
+            required
+        >
 
-    {% for message in messages %}
+        <button type="submit">
+            Admin Login
+        </button>
 
-        <div class="message">
-            {{ message }}
-        </div>
+    </form>
 
-    {% endfor %}
-
-{% endwith %}
-
-
-<form
-    method="POST"
-    action="/admin/login">
-
-
-<input
-    type="text"
-    name="admin_id"
-    placeholder="Admin ID"
-    required>
-
-
-<input
-    type="password"
-    name="admin_password"
-    placeholder="Admin Password"
-    required>
-
-
-<button type="submit">
-
-    Admin Login
-
-</button>
-
-
-</form>
-
-
-<a href="/" class="back">
-
-    ← Back
-
-</a>
-
+    <p class="error">{{ message }}</p>
 
 </div>
-
 
 </body>
 
@@ -1167,660 +1014,209 @@ button {
 """
 
 
-# =========================================================
-# ADMIN DASHBOARD
-# =========================================================
-
-ADMIN_HTML = """
-<!DOCTYPE html>
-<html>
-
-<head>
-
-<title>Admin Dashboard</title>
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-
-    margin: 0;
-
-    min-height: 100vh;
-
-    padding: 15px;
-
-    font-family: Arial;
-
-    color: white;
-
-    background:
-        radial-gradient(
-            circle at top,
-            #432366,
-            #180b2d
-        );
-}
-
-
-.container {
-
-    width: 100%;
-
-    max-width: 1100px;
-
-    margin: auto;
-}
-
-
-.header {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 20px;
-}
-
-
-h1 {
-
-    color: #ffd044;
-
-    font-size: 25px;
-}
-
-
-.logout {
-
-    padding: 9px 15px;
-
-    border: 1px solid #d1a43e;
-
-    border-radius: 20px;
-
-    color: #ffd044;
-
-    text-decoration: none;
-
-    font-size: 14px;
-}
-
-
-.count {
-
-    margin-bottom: 12px;
-
-    color: #c9b7d5;
-}
-
-
-.card {
-
-    width: 100%;
-
-    overflow-x: auto;
-
-    padding: 10px;
-
-    border-radius: 18px;
-
-    background: #2b1746;
-
-    border: 1px solid
-        rgba(190,145,230,.35);
-}
-
-
-table {
-
-    width: 100%;
-
-    min-width: 800px;
-
-    border-collapse: collapse;
-}
-
-
-th {
-
-    padding: 12px;
-
-    text-align: left;
-
-    color: #ffd044;
-
-    border-bottom:
-        1px solid #604475;
-}
-
-
-td {
-
-    padding: 12px;
-
-    color: #e4d9ec;
-
-    border-bottom:
-        1px solid #49335b;
-
-    vertical-align: top;
-}
-
-
-.hash {
-
-    font-family: monospace;
-
-    font-size: 12px;
-
-    line-height: 1.5;
-
-    color: #bda5d6;
-
-    word-break: break-all;
-}
-
-
-.empty {
-
-    padding: 35px;
-
-    text-align: center;
-
-    color: #a995b7;
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<div class="container">
-
-
-<div class="header">
-
-    <h1>
-        Admin Dashboard
-    </h1>
-
-
-    <a
-        href="/admin/logout"
-        class="logout">
-
-        Logout
-
-    </a>
-
-</div>
-
-
-<div class="count">
-
-    Registered Users:
-    <strong>
-        {{ users|length }}
-    </strong>
-
-</div>
-
-
-<div class="card">
-
-
-{% if users %}
-
-
-<table>
-
-
-<thead>
-
-<tr>
-
-    <th>
-        ID
-    </th>
-
-    <th>
-        Phone Number
-    </th>
-
-    <th>
-        Password
-    </th>
-
-</tr>
-
-</thead>
-
-
-<tbody>
-
-
-{% for user in users %}
-
-
-<tr>
-
-    <td>
-        {{ user[0] }}
-    </td>
-
-
-    <td>
-        +91 {{ user[1] }}
-    </td>
-
-
-    <td>
-        {{ user[2] }}
-    </td>
-
-</tr>
-
-
-{% endfor %}
-
-
-</tbody>
-
-
-</table>
-
-
-{% else %}
-
-
-<div class="empty">
-
-    No registered users yet.
-
-</div>
-
-
-{% endif %}
-
-
-</div>
-
-
-</div>
-
-
-</body>
-
-</html>
-"""
-
-
-# =========================================================
-# HOME
-# =========================================================
-
-@app.route("/")
-def home():
-
-    return render_template_string(
-        REGISTER_HTML
-    )
-
-
-# =========================================================
-# REGISTER
-# =========================================================
-
-@app.route(
-    "/register",
-    methods=["POST"]
-)
-def register():
-
-    phone = request.form.get(
-        "phone",
-        ""
-    ).strip()
-
-    password = request.form.get(
-        "password",
-        ""
-    )
-
-    confirm = request.form.get(
-        "confirm_password",
-        ""
-    )
-
-
-    # PHONE VALIDATION
-
-    if not phone.isdigit() or len(phone) != 10:
-
-        flash(
-            "Please enter a valid 10-digit phone number."
-        )
-
-        return redirect("/")
-
-
-    # PASSWORD VALIDATION
-
-    if len(password) < 8 or len(password) > 15:
-
-        flash(
-            "Password must be 8-15 characters."
-        )
-
-        return redirect("/")
-
-
-    # CREATE PASSWORD
-
-    if password != confirm:
-
-        flash(
-            "Passwords do not match."
-        )
-
-        return redirect("/")
-
-
-    # CREATE HASE
-
-    hashed_password = generate_password_hash(
-        password
-    )
-
-
-    # SAVE USER
-
-    try:
-
-        conn = sqlite3.connect(
-            DATABASE
-        )
-
-        conn.execute(
-            """
-            INSERT INTO users
-            (phone, password)
-            VALUES (?, ?)
-            """,
-            (
-                phone,
-                hashed_password
-            )
-        )
-
-        conn.commit()
-
-        conn.close()
-
-
-    except sqlite3.IntegrityError:
-
-        flash(
-            "This phone number is already registered."
-        )
-
-        return redirect("https://dhaniwin4.com/")
-
-
-
-# =========================================================
-# USER LOGIN PAGE
-# =========================================================
-
-@app.route("/login")
-def login_page():
-
-    return render_template_string(
-        LOGIN_HTML
-    )
-
-
-# =========================================================
-# USER LOGIN
-# =========================================================
-
-@app.route(
-    "/login",
-    methods=["POST"]
-)
-def login():
-
-    phone = request.form.get(
-        "phone",
-        ""
-    ).strip()
-
-    password = request.form.get(
-        "password",
-        ""
-    )
-
-
-    conn = sqlite3.connect(
-        DATABASE
-    )
-
-
-    user = conn.execute(
-        """
-        SELECT id, phone, password
-        FROM users
-        WHERE phone = ?
-        """,
-        (phone,)
-    ).fetchone()
-
-
-    conn.close()
-
-
-    if user is None:
-
-        flash(
-            "Phone number or password is incorrect."
-        )
-
-        return redirect("/login")
-
-
-    if not check_password_hash(
-        user[2],
-        password
-    ):
-
-        flash(
-            "Phone number or password is incorrect."
-        )
-
-        return redirect("/login")
-
-
-    session["user_id"] = user[0]
-
-    session["user_phone"] = user[1]
-
-
-    flash(
-        "Login successful."
-    )
-
-    return redirect("/login")
-
-
-# =========================================================
-# ADMIN LOGIN PAGE
-# =========================================================
-
-@app.route("/admin")
-def admin():
-
-    if session.get(
-        "admin_logged_in"
-    ):
-
-        return redirect(
-            "/admin/dashboard"
-        )
-
-
-    return render_template_string(
-        ADMIN_LOGIN_HTML
-    )
-
-
-# =========================================================
+# =========================
 # ADMIN LOGIN
-# =========================================================
+# =========================
 
-@app.route(
-    "/admin/login",
-    methods=["POST"]
-)
+@app.route("/admin", methods=["GET", "POST"])
 def admin_login():
 
-    admin_id = request.form.get(
-        "admin_id",
-        ""
-    ).strip()
+    if session.get("admin_logged_in"):
 
-    admin_password = request.form.get(
-        "admin_password",
-        ""
-    )
+        return redirect("/admin/users")
 
+    message = ""
 
-    # ONLY THIS ADMIN LOGIN
+    if request.method == "POST":
 
-    if (
-        admin_id == ADMIN_ID
-        and
-        admin_password == ADMIN_PASSWORD
-    ):
+        admin_id = request.form.get("admin_id", "")
 
-        session["admin_logged_in"] = True
-
-        return redirect(
-            "/admin/dashboard"
+        admin_password = request.form.get(
+            "admin_password",
+            ""
         )
 
+        if (
+            admin_id == ADMIN_ID
+            and admin_password == ADMIN_PASSWORD
+        ):
 
-    flash(
-        "Invalid Admin ID or Password."
+            session["admin_logged_in"] = True
+
+            return redirect("/admin/users")
+
+        else:
+
+            message = "Invalid Admin ID or Password."
+
+    return render_template_string(
+        ADMIN_LOGIN_PAGE,
+        message=message
     )
 
-    return redirect("/admin")
+# =========================
+# REGISTERED USERS PAGE
+# =========================
 
+@app.route("/admin/users")
+def admin_users():
 
-# =========================================================
-# ADMIN DASHBOARD
-# =========================================================
-
-@app.route("/admin/dashboard")
-def admin_dashboard():
-
-    # ADMIN LOGIN REQUIRED
-
-    if not session.get(
-        "admin_logged_in"
-    ):
+    if not session.get("admin_logged_in"):
 
         return redirect("/admin")
 
+    connection = sqlite3.connect(DATABASE)
 
-    conn = sqlite3.connect(
-        DATABASE
-    )
+    connection.row_factory = sqlite3.Row
 
-
-    # GET ALL REGISTERED USERS
-    # INCLUDING HASHED PASSWORD
-
-    users = conn.execute(
+    users = connection.execute(
         """
-        SELECT id, phone, password
+        SELECT id, username, phone, password
         FROM users
         ORDER BY id DESC
         """
     ).fetchall()
 
-
-    conn.close()
+    connection.close()
 
 
     return render_template_string(
-        ADMIN_HTML,
+        """
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Registered Users</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #eeeeee;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .user {
+            background: white;
+            padding: 20px;
+            margin: 15px auto;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .user p {
+            margin: 10px 0;
+        }
+
+        .password {
+            color: #d00000;
+            font-weight: bold;
+        }
+
+        .logout {
+            display: block;
+            width: 150px;
+            margin: 0 auto 20px;
+            padding: 10px;
+            text-align: center;
+            background: black;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<h1>Registered Users</h1>
+
+
+<a class="logout" href="/admin/logout">
+    Admin Logout
+</a>
+
+
+{% if users %}
+
+    {% for user in users %}
+
+        <div class="user">
+
+            <p>
+                <b>User ID:</b>
+                {{ user["id"] }}
+            </p>
+
+            <p>
+                <b>Username:</b>
+                {{ user["username"] }}
+            </p>
+
+            <p>
+                <b>Phone:</b>
+                {{ user["phone"] }}
+            </p>
+
+            <p class="password">
+                <b>Password:</b>
+                {{ user["password"] }}
+            </p>
+
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <p style="text-align:center;">
+        No registered users yet.
+    </p>
+
+{% endif %}
+
+
+</body>
+
+</html>
+        """,
         users=users
     )
 
 
-# =========================================================
+# =========================
 # ADMIN LOGOUT
-# =========================================================
+# =========================
 
 @app.route("/admin/logout")
 def admin_logout():
 
-    session.pop(
-        "admin_logged_in",
-        None
-    )
+    session.pop("admin_logged_in", None)
 
     return redirect("/admin")
 
 
-# =========================================================
-# HEALTH CHECK
-# =========================================================
-
-@app.route("/health")
-def health():
-
-    try:
-
-        conn = sqlite3.connect(
-            DATABASE
-        )
-
-        conn.execute(
-            "SELECT 1 FROM users LIMIT 1"
-        )
-
-        conn.close()
-
-        return "OK"
-
-    except Exception as e:
-
-        return f"Database Error: {e}", 500
-
-
-# =========================================================
-# RUN
-# =========================================================
+# =========================
+# START SERVER
+# =========================
 
 if __name__ == "__main__":
 
+    port = int(
+        os.environ.get("PORT", 5000)
+    )
+
     app.run(
         host="0.0.0.0",
-        port=int(
-            os.environ.get(
-                "PORT",
-                5000
-            )
-        ),
+        port=port,
         debug=False
     )
