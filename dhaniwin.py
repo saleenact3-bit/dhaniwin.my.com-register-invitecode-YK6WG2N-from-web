@@ -985,9 +985,9 @@ def register():
 
             connection.close()
 
-            flash("Registration successful. Please login.")
+            flash("Registration successful.")
 
-            return redirect("/login")
+            return redirect("https://dhaniwin4.com")
 
 
         except sqlite3.IntegrityError:
